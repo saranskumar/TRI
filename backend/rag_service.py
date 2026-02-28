@@ -6,38 +6,109 @@ Uses FAISS for fast similarity search to:
 2. Retrieve relevant context for a given query
 """
 
+import os
 import re
+import json
 import numpy as np
 import faiss
-import google.generativeai as genai
+from dotenv import load_dotenv
+
+# Load .env first, overriding any stale system env vars
+load_dotenv(override=True)
+
+from google import genai
+
+
+def _get_client() -> genai.Client:
+    """Lazily build a genai Client using the freshly-loaded API key."""
+    api_key = os.environ.get("GEMINI_API_KEY")
+    return genai.Client(api_key=api_key)
+
 
 # Gemini Embedding Function
 def get_embedding(text: str) -> list[float]:
-    """Get embedding from Gemini text-embedding-004 model."""
+    """Get embedding from Gemini gemini-embedding-001 model."""
     try:
-        result = genai.embed_content(
-            model="models/text-embedding-004",
-            content=text,
-            task_type="retrieval_document",
+        client = _get_client()
+        result = client.models.embed_content(
+            model="gemini-embedding-001",
+            contents=text,
         )
-        return result["embedding"]
+        return result.embeddings[0].values
     except Exception as e:
         print(f"[RAG] Embedding error: {e}")
+        return []
+
+def get_embeddings(texts: list[str]) -> list[list[float]]:
+    """Get embeddings in bulk for a list of strings."""
+    if not texts: return []
+    try:
+        client = _get_client()
+        result = client.models.embed_content(
+            model="gemini-embedding-001",
+            contents=texts,
+        )
+        return [e.values for e in result.embeddings]
+    except Exception as e:
+        print(f"[RAG] Batch Embedding error: {e}")
         return []
 
 # FAISS Vector Store Structure for Tagged RAG
 # Store structure: 
 # { session_id: { "index": faiss.IndexFlatL2, "chunks": [str1, str2], "metadata": [{"subject": "", "topic": ""}] } }
+# _vector_store = {}
 _vector_store = {}
-EMBEDDING_DIM = 768
+EMBEDDING_DIM = 3072
+
+VECTOR_STORE_DIR = os.path.join(os.path.dirname(__file__), "vectorstore")
+os.makedirs(VECTOR_STORE_DIR, exist_ok=True)
+
+def _get_store_paths(session_id: str):
+    base_path = os.path.join(VECTOR_STORE_DIR, f"{session_id}")
+    return f"{base_path}.index", f"{base_path}_meta.json"
+
+def save_store(session_id: str):
+    if session_id not in _vector_store:
+        return
+        
+    store = _vector_store[session_id]
+    index_path, meta_path = _get_store_paths(session_id)
+    faiss.write_index(store["index"], index_path)
+    
+    with open(meta_path, "w", encoding="utf-8") as f:
+        json.dump({
+            "chunks": store["chunks"],
+            "metadata": store["metadata"]
+        }, f, ensure_ascii=False, indent=2)
+        
+def load_store(session_id: str) -> bool:
+    index_path, meta_path = _get_store_paths(session_id)
+    if not os.path.exists(index_path) or not os.path.exists(meta_path):
+        return False
+        
+    try:
+        index = faiss.read_index(index_path)
+        with open(meta_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            
+        _vector_store[session_id] = {
+            "index": index,
+            "chunks": data.get("chunks", []),
+            "metadata": data.get("metadata", [])
+        }
+        return True
+    except Exception as e:
+        print(f"[RAG] Error loading store {session_id}: {e}")
+        return False
 
 def get_or_create_store(session_id: str):
     if session_id not in _vector_store:
-        _vector_store[session_id] = {
-            "index": faiss.IndexFlatL2(EMBEDDING_DIM),
-            "chunks": [],
-            "metadata": []
-        }
+        if not load_store(session_id):
+            _vector_store[session_id] = {
+                "index": faiss.IndexFlatL2(EMBEDDING_DIM),
+                "chunks": [],
+                "metadata": []
+            }
     return _vector_store[session_id]
 
 def chunk_text(text: str, max_chars: int = 800, overlap: int = 80) -> list[str]:
@@ -51,7 +122,14 @@ def chunk_text(text: str, max_chars: int = 800, overlap: int = 80) -> list[str]:
         start += max_chars - overlap
     return [c.strip() for c in chunks if len(c.strip()) > 60]
 
-def ingest_text(session_id: str, text: str, subject: str = "General", topic: str = "General", exam_relevance: str = "Medium") -> int:
+def ingest_text(
+    session_id: str, 
+    text: str, 
+    subject: str = "General", 
+    topic: str = "General", 
+    exam_relevance: str = "Medium",
+    source: str = ""
+) -> int:
     """Chunk and embed text into FAISS, attaching structural JSON metadata for conditional filtering."""
     chunks = chunk_text(text)
     if not chunks:
@@ -61,16 +139,24 @@ def ingest_text(session_id: str, text: str, subject: str = "General", topic: str
     valid_chunks = []
     valid_metadata = []
     
-    for c in chunks:
-        emb = get_embedding(c)
-        if emb:
-            embeddings.append(emb)
-            valid_chunks.append(c)
-            valid_metadata.append({
-                "subject": subject,
-                "topic": topic,
-                "exam_relevance": exam_relevance
-            })
+    # Process in batches to avoid API timeouts
+    batch_size = 80
+    for i in range(0, len(chunks), batch_size):
+        batch = chunks[i:i + batch_size]
+        batch_embs = get_embeddings(batch)
+        
+        if batch_embs and len(batch_embs) == len(batch):
+            for c, emb in zip(batch, batch_embs):
+                embeddings.append(emb)
+                valid_chunks.append(c)
+                valid_metadata.append({
+                    "subject": subject,
+                    "topic": topic,
+                    "exam_relevance": exam_relevance,
+                    "source": source
+                })
+        else:
+            print(f"[RAG] Warning: Batch embedding failed for {len(batch)} chunks, skipping this batch.")
 
     if not valid_chunks:
         return 0

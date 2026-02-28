@@ -1,0 +1,141 @@
+SEMESTER 3
+COMPUTER SCIENCE AND ENGINEERING
+(Artificial Intelligence and Machine Learning)
+SEMESTER S3
+MATHEMATICS FOR COMPUTER AND INFORMATION SCIENCE-3
+Course Code GAMAT301
+Course Objectives:
+1. To familiarize students with the foundations of probability and analysis of random processes used in various applications in engineering and science.
+SYLLABUS
+Module 1: Random variables, Discrete random variables and their probability distributions, Cumulative distribution function, Expectation, Mean and variance, the Binomial probability distribution, the Poisson probability distribution, Poisson distribution as a limit of the binomial distribution, Joint pmf of two discrete random variables, Marginal pmf, Independent random variables, Expected value of a function of two discrete variables.
+Module 2: Continuous random variables and their probability distributions, Cumulative distribution function, Expectation, Mean and variance, Uniform, Normal and Exponential distributions, Joint pdf of two Continuous random variables, Marginal pdf, Independent random variables, Expectation value of a function of two continuous variables.
+Module 3: Limit theorems : Markov’s Inequality, Chebyshev’s Inequality, Strong Law of Large Numbers (Without proof), Central Limit Theorem (without proof), Stochastic Processes: Discrete-time process, Continuous-time process, Counting Processes, The Poisson Process, Interarrival times
+Module 4: Markov Chains, Random Walk Model, Chapman–Kolmogorov Equations, Classification of States, Irreducible Markov chain, Recurrent state, Transient state, Long-Run Proportions.
+
+SEMESTER S3
+THEORY OF COMPUTATION
+Course Code PCCST302
+Module 1: Foundations. Motivation for studying computability, need for mathematical modeling - automata. Finite Automata: Formal definition of a finite automaton, Deterministic Finite Automata (DFA), Regular languages, Nondeterminism, NFA with epsilon transitions, Equivalence of NFAs and DFAs - The Subset Construction. DFA State Minimization.
+Module 2: Regular Expressions: Formal definition of a regular expression, Equivalence with finite automata. Properties of Regular Languages: Closure and Decision Properties, Pumping Lemma for Regular Languages. Context-Free Grammars: Formal definition, Leftmost and Rightmost Derivations, Parse Trees, Ambiguity.
+Module 3: Pushdown Automata: Formal definition, DPDA and NPDA. Equivalence NPDAs and CFGs. Simplification of Context-Free Languages: Elimination of useless symbols, epsilon productions, unit productions, Chomsky normal form, Greibach normal form. Properties of Context-Free Languages: Pumping Lemma, Closure Properties.
+Module 4: Turing Machines: Formal definition, Turing machines as language acceptors and computers of functions. Variants of Turing Machines. Recursive and recursively enumerable languages, Chomskian hierarchy, Linear bounded automaton. Computability: Church Turing thesis, Halting problem, Post Correspondence Problem.
+
+SEMESTER S3
+DATA STRUCTURES AND ALGORITHMS
+Course Code PCCST303
+Module 1: Basic Concepts of Data Structures. Time & Space Complexity, Asymptotic Notations. Arrays, Sparse matrix. Stacks and Queues. Evaluation of Expressions- Infix to Postfix.
+Module 2: Linked List and Memory Management. Singly Linked List, Doubly Linked List, Circular Linked List. Memory allocation - First-fit, Best-fit, Worst-fit. Garbage collection.
+Module 3: Trees and Graphs. Binary Trees, Binary Search Trees, Binary Heaps. Graphs: Representation, Depth First Search, Breadth First Search.
+Module 4: Sorting and Searching. Selection Sort, Insertion Sort, Quick Sort, Merge Sort, Heap Sort, Radix Sort. Linear Search, Binary Search. Hashing, Collision Resolution.
+
+SEMESTER S3
+CONCEPTS IN MACHINE LEARNING
+Course Code PBCMT304
+Module 1: Introduction to ML. Supervised, unsupervised, reinforcement learning. MLE and MAP. Linear regression with one or multiple variables.
+Module 2: Classification - Naive Bayes, KNN. Generalisation and Overfitting, LASSO and RIDGE regularization. Evaluation Measures: Precision, Recall, Accuracy, ROC, AUC, MAE, RMSE, R Squared.
+Module 3: Neural Networks - Perceptron, Multilayer feed-forward network, Activation functions, Back propagation. Decision Trees – Information Gain, Gain Ratio, ID3 algorithm.
+Module 4: Clustering - Hierarchical, K-means. Dimensionality reduction: PCA. Ensemble methods: Bagging, Boosting. Resampling methods.
+
+SEMESTER S3
+DIGITAL ELECTRONICS AND LOGIC DESIGN
+Course Code GAEST305
+Module 1: Digital Systems, Number Systems, Basic gates. Verilog (Part 1).
+Module 2: Combinational Logic Design, Boolean Algebra, Logic minimization, K-map. Modeling concurrent functionality in Verilog.
+Module 3: MSI Logic and Digital Building Blocks. Decoders, Encoders, Multiplexers. Arithmetic Circuits - Adders, Subtractor, Comparators. Structural design in Verilog.
+Module 4: Sequential Logic Design. Latches, Flip-Flops. Sequential logic timing, counters, shift registers. Finite State Machines. Verilog (Part 2) - Procedural assignment, Test benches.
+
+SEMESTER S4
+MATHEMATICS FOR COMPUTER AND INFORMATION SCIENCE-4
+Course Code GAMAT401
+Module 1: Introduction to Graphs. Basic definition, Application of graphs. Isomorphism, Sub graphs, Walks, Paths and circuits, Connected graphs.
+Module 2: Euler graphs, Hamiltonian paths and circuits, Travelling Salesman Problem, Connectivity, Directed graphs.
+Module 3: Trees- Rooted and binary trees, Spanning trees, Prim's and Kruskal's algorithm, Dijkstra's shortest path algorithm, Floyd-Warshall.
+Module 4: Matrix representation of graphs. Adjacency matrix, Incidence Matrix. Coloring, Chromatic number, Greedy colouring algorithm.
+
+SEMESTER S4
+FUNDAMENTALS OF ARTIFICIAL INTELLIGENCE
+Course Code PCCMT402
+Module 1: AI Agents and Environments. Problem solving Agents. Formulating problems.
+Module 2: Blind Search strategies - DFS, BFS, IDS. Heuristic Search - A* algorithm, Local search. Adversarial search - Minimax, Alpha–beta pruning.
+Module 3: Knowledge-Based Agents. Propositional Logic, First order logic, Inference, forward chaining, Backward chaining.
+Module 4: Planning - Classical planning, State abstraction, Hierarchical Planning.
+
+SEMESTER S4
+OPERATING SYSTEMS
+Course Code PCCST403
+Module 1: Introduction to Operating Systems. Process concepts, Process scheduling. Threads and Concurrency. Linux CFS.
+Module 2: Concurrency and Synchronization - Locks, Semaphores, Deadlock Characterization, Prevention and Avoidance.
+Module 3: Memory management - Address Space, Segmentation, Paging. Virtual memory, Page replacement policies.
+Module 4: I/O system, DMA, Device Driver. Hard disk scheduling. Files and Directories, File System Interface, File Organization: The Inode.
+
+SEMESTER S4
+DATABASE SYSTEMS
+Course Code PBCMT404
+Module 1: Introduction to Databases. Database System Concepts and Architecture. Conceptual Data Modelling and Database Design (ER Model).
+Module 2: Relational Data Model and SQL. Relational Algebra, DDL, DML, Triggers, views. ER-to-Relational Mapping.
+Module 3: Database Design Theory and Normalization (1NF, 2NF, 3NF). Transaction Management, Concurrency Control, Deadlock Recovery.
+Module 4: Introduction to NoSQL Concepts. CAP Theorem, BASE properties. Key-value Stores, Document Stores.
+
+SEMESTER S4
+SOFTWARE ENGINEERING
+Course Code PECST411
+Module 1: Software Process models. Requirement engineering, SRS document.
+Module 2: Software design - Software architecture patterns. Object Oriented Software Design - UML diagrams. Software patterns (MVC, Creational, Structural, Behavioral).
+Module 3: Coding, Testing (Black box, White box), DevOps and CI/CD. Software maintenance.
+Module 4: Software Project Management - Metrics, Cost estimation (COCOMO). Risk management. Cloud-based Software, Microservices.
+
+SEMESTER S4
+PATTERN RECOGNITION
+Course Code PECST412
+Module 1: Foundations of Pattern Recognition. Bayes decision theory, Parametric & Non-Parametric methods (k-NN).
+Module 2: Feature Extraction and Selection (PCA, LDA).
+Module 3: Supervised (SVM) and Unsupervised Learning (k-means, GMM).
+Module 4: Advanced Topics: Hidden Markov Models (HMMs), Ensemble Methods.
+
+SEMESTER S4
+FUNCTIONAL PROGRAMMING
+Course Code PECST413
+Module 1: Functional Programming basics in Haskell. Data Types, Tuples and Lists.
+Module 2: Programming with Lists. I/O in Haskell.
+Module 3: Higher-order Functions. Overloading, Type Classes.
+Module 4: Algebraic Types. Abstract Data Types. Lazy Programming. Time and Space Behaviour.
+
+SEMESTER S4
+CODING THEORY
+Course Code PECST414
+Module 1: Binary block codes. Linear block codes, Hamming codes.
+Module 2: Cyclic Codes. Encoding and Decoding.
+Module 3: Convolutional codes. Viterbi algorithm.
+Module 4: Turbo codes. Distance properties and decoding.
+
+SEMESTER S4
+SIGNALS AND SYSTEMS
+Course Code PECST416
+Module 1: 1D Signals, DT signals, DTFS. Operations on Signals.
+Module 2: Discrete-Time Fourier Transform. Frequency Spectra.
+Module 3: Discrete time systems, LTI Systems, Convolution, Difference equations.
+Module 4: Z transform, Properties, Inverse z Transform, Transfer function.
+
+SEMESTER S4
+SOFT COMPUTING
+Course Code PECST417
+Module 1: Introduction to Soft Computing. Artificial Neural Networks, Perceptron, ADALINE.
+Module 2: Fuzzy logic, Fuzzy sets, Fuzzy Inference mechanism (Mamdani, Sugeno).
+Module 3: Evolutionary Computing, Genetic algorithm, Crossover and Mutation.
+Module 4: Multi-objective optimization, Particle Swarm Optimization, Ant Colony Optimization.
+
+SEMESTER S4
+COMPUTATIONAL GEOMETRY
+Course Code PECST418
+Module 1: Convex Hulls (Graham's scan, Jarvis's march), Line Segment Intersection.
+Module 2: Polygon Triangulation, Voronoi Diagrams, Delaunay Triangulations.
+Module 3: Range Searching, Point Location, Binary Space Partitioning.
+Module 4: Arrangements of Lines, Motion Planning, Geometric Optimization.
+
+SEMESTER S4
+CYBER ETHICS, PRIVACY AND LEGAL ISSUES
+Course Code PECST419
+Module 1: Fundamentals of Cyber Law and Cyber Space.
+Module 2: Cyber crime and Cyber Ethics.
+Module 3: Data Protection and Privacy Concerns (GDPR).
+Module 4: Security Policies and Information Technology Act 2000.

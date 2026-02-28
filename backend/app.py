@@ -1,4 +1,6 @@
 from flask import Flask
+from dotenv import load_dotenv
+load_dotenv(override=True)
 from flask_cors import CORS
 from routes.analyze import analyze_bp
 from routes.plan import plan_bp
@@ -26,13 +28,16 @@ def health():
 
 
 if __name__ == "__main__":
-    # Pre-load CL Branch scheme PDF into shared RAG store at startup
-    try:
-        from data_loader import load_cl_scheme
-        chunks = load_cl_scheme()
-        app.config["CL_SCHEME_LOADED"] = chunks > 0
-    except Exception as e:
-        print(f"[Startup] Could not preload CL scheme: {e}")
+    # Ensure vector store exists before starting
+    import os
+    from rag_service import load_store
+    
+    # Try to load the shared collection
+    if load_store("tri_cl_scheme_shared"):
+        print("[Startup] ✓ Loaded existing FAISS vector database from disk.")
+        app.config["CL_SCHEME_LOADED"] = True
+    else:
+        print("[Startup] ⚠️ Vector database not found. Please run `python vectorize_data.py`!")
         app.config["CL_SCHEME_LOADED"] = False
 
     app.run(debug=True, port=5000)

@@ -33,7 +33,7 @@ def load_cl_scheme() -> int:
         return 0
 
     # Ingest into the shared collection
-    count = ingest_text(SHARED_COLLECTION, full_text, source="cl_scheme_pdf")
+    count = ingest_text(SHARED_COLLECTION, full_text, subject="CL Scheme", topic="Syllabus")
     print(f"[DataLoader] ✓ Ingested {count} chunks from CL scheme.pdf")
     return count
 

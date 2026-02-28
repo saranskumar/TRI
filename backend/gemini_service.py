@@ -1,20 +1,27 @@
 import os
 import json
-import google.generativeai as genai
 from dotenv import load_dotenv
 
-load_dotenv()
+# Load .env FIRST so os.environ has the correct key before we build the client
+load_dotenv(override=True)
 
-genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-3.0-flash")
+from google import genai
+
+
+def _get_client() -> genai.Client:
+    """Lazily build a genai Client using the freshly-loaded API key."""
+    api_key = os.environ.get("GEMINI_API_KEY")
+    return genai.Client(api_key=api_key)
 
 
 def call_gemini(prompt: str) -> dict:
     """Call Gemini API and parse the JSON response."""
     try:
-        response = model.generate_content(
-            prompt,
-            generation_config=genai.types.GenerationConfig(
+        client = _get_client()
+        response = client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt,
+            config=genai.types.GenerateContentConfig(
                 temperature=0.4,
                 max_output_tokens=8192,
             ),
