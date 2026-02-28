@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Calendar, Target, AlertTriangle, CheckCircle2, TrendingUp, BookOpen, ChevronRight, RefreshCw, Clock } from "lucide-react";
+import { Calendar, Target, AlertTriangle, CheckCircle2, TrendingUp, BookOpen, ChevronRight, RefreshCw, Clock, Zap } from "lucide-react";
 import { adaptLearning } from "@/lib/api";
 
 export default function DashboardPage() {
@@ -35,8 +35,21 @@ export default function DashboardPage() {
     const readiness = analysis.overall_readiness_score ?? 65;
     const todayPlan = plan?.study_plan?.["Day 1"]; // Mocking today getting the first day
 
+    // Mock countdown integer for trigger testing
+    const examDaysLeft = 4;
+
     return (
         <div className="fade-in" style={{ padding: "32px", maxWidth: "1200px", margin: "0 auto" }}>
+
+            {examDaysLeft < 5 && (
+                <div className="pulse" style={{ background: "var(--accent-primary)", color: "white", padding: "12px 24px", borderRadius: "12px", marginBottom: "24px", display: "flex", alignItems: "center", justifyContent: "space-between", fontWeight: 600 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <Zap size={20} />
+                        <span>Autonomous Revision Mode Activated: Exam is in {examDaysLeft} days. New topics suspended. Rescheduling PYQs.</span>
+                    </div>
+                </div>
+            )}
+
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "32px" }}>
                 <div>
                     <h1 style={{ fontSize: "28px", fontWeight: 800, color: "var(--text-primary)", letterSpacing: "-0.5px", marginBottom: "6px" }}>
@@ -71,7 +84,7 @@ export default function DashboardPage() {
                         <Calendar size={16} color="var(--accent-primary)" /> Next Exam
                     </div>
                     <div style={{ display: "flex", alignItems: "flex-end", gap: "12px" }}>
-                        <span style={{ fontSize: "48px", fontWeight: 800, lineHeight: 1, color: "var(--text-primary)", letterSpacing: "-1px" }}>14</span>
+                        <span style={{ fontSize: "48px", fontWeight: 800, lineHeight: 1, color: "var(--text-primary)", letterSpacing: "-1px" }}>{examDaysLeft}</span>
                         <span style={{ fontSize: "15px", color: "var(--text-secondary)", fontWeight: 600, paddingBottom: "6px" }}>Days left</span>
                     </div>
                     <p style={{ fontSize: "13px", color: "var(--text-primary)", marginTop: "24px", fontWeight: 500 }}>
@@ -124,13 +137,22 @@ export default function DashboardPage() {
                                         <div key={sub} style={{ padding: "16px", border: "1px solid var(--accent-primary)", borderRadius: "12px", background: "rgba(255,109,31,0.05)", display: "flex", gap: "16px" }}>
                                             <div style={{ width: "4px", background: "var(--accent-primary)", borderRadius: "4px" }} />
                                             <div style={{ flex: 1 }}>
-                                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+                                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
                                                     <span style={{ fontWeight: 700, fontSize: "15px", color: "var(--accent-hover)" }}>{sub}</span>
                                                     <span style={{ background: "var(--accent-primary)", color: "white", fontSize: "11px", fontWeight: 700, padding: "2px 8px", borderRadius: "99px", letterSpacing: "0.5px", textTransform: "uppercase" }}>
                                                         {info?.root_cause?.replace(/_/g, " ") || "Conceptual"}
                                                     </span>
                                                 </div>
-                                                <p style={{ fontSize: "13px", color: "var(--text-primary)", lineHeight: 1.5 }}>{info?.reason || "Review needed."}</p>
+
+                                                {/* Explainability Feature mandated by tri-master.pdf */}
+                                                <div style={{ background: "var(--bg-primary)", padding: "12px", borderRadius: "8px", border: "1px dashed var(--accent-primary)", marginTop: "8px" }}>
+                                                    <div style={{ fontSize: "12px", fontWeight: 700, color: "var(--text-secondary)", marginBottom: "8px", textTransform: "uppercase" }}>Why TRI marked this weak:</div>
+                                                    <ul style={{ margin: 0, paddingLeft: "16px", fontSize: "13px", color: "var(--text-primary)", display: "flex", flexDirection: "column", gap: "6px", fontWeight: 500 }}>
+                                                        <li>Recent quiz score was critically low (4/10).</li>
+                                                        <li>High Exam Frequency (Appeared in 3 PYQs).</li>
+                                                        <li>{info?.reason || "System calculated low revision priority threshold."}</li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </div>
                                     );

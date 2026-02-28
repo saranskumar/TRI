@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 import TopNav from "@/components/TopNav";
 import LeftSidebar from "@/components/LeftSidebar";
 import BottomDock from "@/components/BottomDock";
+import SystemActivity from "@/components/SystemActivity";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -21,9 +22,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <TopNav />
         <div style={{ display: "flex", flex: 1, overflow: "hidden", background: "var(--bg-primary)" }}>
           <LeftSidebar />
-          <main style={{ flex: 1, overflowY: "auto", position: "relative" }}>
-            {children}
-          </main>
+          <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+            <main style={{ flex: 1, overflowY: "auto", position: "relative" }}>
+              {children}
+            </main>
+            <SystemActivity />
+          </div>
         </div>
         <BottomDock />
       </body>
