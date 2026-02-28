@@ -8,11 +8,13 @@ export default function DashboardPage() {
     const router = useRouter();
     const [analysis, setAnalysis] = useState<any>(null);
     const [plan, setPlan] = useState<any>(null);
+    const [profile, setProfile] = useState<any>(null);
     const [sessionId, setSessionId] = useState<string | null>(null);
 
     useEffect(() => {
         const a = localStorage.getItem("tri_analysis");
         const p = localStorage.getItem("tri_plan");
+        const pf = localStorage.getItem("tri_profile");
         const s = localStorage.getItem("tri_session_id");
         if (!a || !s) {
             router.push("/");
@@ -20,6 +22,7 @@ export default function DashboardPage() {
         }
         setAnalysis(JSON.parse(a));
         if (p) setPlan(JSON.parse(p));
+        if (pf) setProfile(JSON.parse(pf));
         setSessionId(s);
     }, [router]);
 
@@ -33,10 +36,12 @@ export default function DashboardPage() {
     }
 
     const readiness = analysis.overall_readiness_score ?? 65;
-    const todayPlan = plan?.study_plan?.["Day 1"]; // Mocking today getting the first day
+    // Get the first valid day from the plan dictionary or fallback
+    const days = plan?.study_plan ? Object.keys(plan.study_plan).sort() : [];
+    const todayPlan = days.length > 0 ? plan.study_plan[days[0]] : null;
 
-    // Mock countdown integer for trigger testing
-    const examDaysLeft = 4;
+    // Use exam days left from profile if any, else default dynamically to something realistic
+    const examDaysLeft = profile?.exam_days_left || 14;
 
     return (
         <div className="fade-in" style={{ padding: "32px", maxWidth: "1200px", margin: "0 auto" }}>
@@ -88,7 +93,7 @@ export default function DashboardPage() {
                         <span style={{ fontSize: "15px", color: "var(--text-secondary)", fontWeight: 600, paddingBottom: "6px" }}>Days left</span>
                     </div>
                     <p style={{ fontSize: "13px", color: "var(--text-primary)", marginTop: "24px", fontWeight: 500 }}>
-                        Database Management Systems (Internal 2)
+                        {profile?.subjects?.[0] || "General Priority"} (Target Exam)
                     </p>
                 </div>
 
@@ -190,10 +195,16 @@ export default function DashboardPage() {
                     <h2 style={{ fontSize: "16px", fontWeight: 700, color: "var(--text-primary)", marginBottom: "24px" }}>Subject Overview</h2>
                     <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
 
-                        {/* Mocking subjects from the ones we know exist since its an overview */}
-                        {["Database Management", "Operating Systems", "Computer Networks"].map((sub, idx) => {
-                            // Creating some mock progress for the visual dashboard using index
-                            const progress = [75, 40, 90][idx];
+                        {/* Using actual subjects from profile, or fallback to analysis subjects */}
+                        {(profile?.subjects || analysis?.important_topics?.slice(0, 3) || ["Topic 1", "Topic 2", "Topic 3"]).map((sub: string, idx: number) => {
+                            // Calculate approximate progress based on confidence or a default
+                            let progress = 50;
+                            const conf = profile?.confidence?.[sub];
+                            if (conf === "high") progress = 85;
+                            else if (conf === "medium") progress = 60;
+                            else if (conf === "low") progress = 35;
+                            else progress = Math.max(20, 100 - (idx * 15)); // pseudo-random if no conf
+
                             const isWeak = analysis.weak_subjects?.includes(sub);
 
                             return (
