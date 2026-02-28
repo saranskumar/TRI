@@ -34,22 +34,27 @@ export default function PatientForm({ data, onChange, onSubmit, isLoading }: Pat
                 </div>
 
                 <div>
-                    <label className="block text-xs font-mono text-slate-400 mb-1">INJURY (0=No, 1=Yes)</label>
+                    <label className="block text-xs font-mono text-slate-400 mb-1">INJURY (0-2)</label>
                     <select
                         name="injury" value={data.injury} onChange={handleChange}
                         className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-500"
                     >
-                        <option value={0}>0 - No</option>
-                        <option value={1}>1 - Yes</option>
+                        <option value={0}>0 - None</option>
+                        <option value={1}>1 - Minor</option>
+                        <option value={2}>2 - Major</option>
                     </select>
                 </div>
 
                 <div>
-                    <label className="block text-xs font-mono text-slate-400 mb-1">PAIN (0-10)</label>
-                    <input
-                        type="number" name="pain" min="0" max="10" value={data.pain || ""} onChange={handleChange}
+                    <label className="block text-xs font-mono text-slate-400 mb-1">PAIN (0-2)</label>
+                    <select
+                        name="pain" value={data.pain} onChange={handleChange}
                         className="w-full bg-slate-900 border border-slate-600 rounded px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-500"
-                    />
+                    >
+                        <option value={0}>0 - None</option>
+                        <option value={1}>1 - Mild</option>
+                        <option value={2}>2 - Severe</option>
+                    </select>
                 </div>
 
                 <div>
@@ -109,8 +114,8 @@ export default function PatientForm({ data, onChange, onSubmit, isLoading }: Pat
                 onClick={onSubmit}
                 disabled={isLoading}
                 className={`w-full py-4 rounded-xl font-bold tracking-widest uppercase transition-all duration-300 flex items-center justify-center gap-2 ${isLoading
-                        ? "bg-slate-700 text-slate-400 cursor-not-allowed"
-                        : "bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                    ? "bg-slate-700 text-slate-400 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-500 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]"
                     }`}
             >
                 {isLoading ? (

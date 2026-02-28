@@ -1,7 +1,7 @@
 export interface TriageInput {
     age: number;
-    injury: number; // 0 = no, 1 = yes
-    pain: number; // 0-10 or localized scale
+    injury: number; // 0 = none, 1 = minor, 2 = major
+    pain: number; // 0 = none, 1 = mild, 2 = severe
     mental_state: number; // 0 = alert, 1 = altered, 2 = unresponsive
     sbp: number; // Systolic Blood Pressure
     heart_rate: number;
